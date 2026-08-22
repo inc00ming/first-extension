@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <h1>X Redirector</h1>
+  <p class="hint">Redirect x.com to:</p>
+  <form id="add-form">
+    <input id="host-input" type="text" placeholder="e.g. nitter.example.com" autocomplete="off" />
+    <button type="submit">Add</button>
+  </form>
+  <p id="error" class="error hidden"></p>
+  <div id="host-list"></div>
+  <script src="popup.js"></script>
+</body>
+</html>
