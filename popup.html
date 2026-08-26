@@ -6,6 +6,13 @@
 </head>
 <body>
   <h1>X Redirector</h1>
+  <div class="toggle-row">
+    <label class="switch" for="enabled-toggle">
+      <input id="enabled-toggle" type="checkbox" />
+      <span class="slider"></span>
+    </label>
+    <label id="enabled-label" for="enabled-toggle">Redirection on</label>
+  </div>
   <p class="hint">Redirect x.com to:</p>
   <form id="add-form">
     <input id="host-input" type="text" placeholder="e.g. nitter.example.com" autocomplete="off" />
