@@ -2,14 +2,16 @@
 
 A minimal browser extension (Manifest V3) that redirects **x.com** to a Nitter-compatible
 frontend of your choice — e.g. [xcancel.com](https://xcancel.com), [nitter.net](https://nitter.net),
-or [lightbrd.com](https://lightbrd.com). You can add any custom instance from the popup.
+or [lightbrd.com](https://lightbrd.com). You can add any custom instance from the popup, and
+turn redirection on or off with the toggle at the top of the popup.
 
 ## How it works
 
 The extension uses the [declarativeNetRequest](https://developer.chrome.com/docs/extensions/reference/api/declarativeNetRequest)
 API with a single dynamic rule that rewrites the host of any `x.com` navigation. The selected
-target host is stored in `chrome.storage.sync` and the rule is kept in sync by the service
-worker (`background.js`).
+target host and the on/off state are stored in `chrome.storage.sync` and the rule is kept in
+sync by the service worker (`background.js`). When redirection is off the rule is removed
+entirely and an **off** badge is shown on the toolbar icon.
 
 ## Load into your browser
 
@@ -39,7 +41,7 @@ Manifest V3 with `declarativeNetRequest` dynamic rules works in recent Firefox v
 manifest.json    Extension manifest (MV3)
 background.js    Service worker: applies/updates the dynamic redirect rule
 popup.html/css   Toolbar popup UI
-popup.js         Popup logic: candidate list, custom hosts, selection
+popup.js         Popup logic: on/off toggle, candidate list, custom hosts, selection
 icons/           Toolbar and store icons
 ```
 

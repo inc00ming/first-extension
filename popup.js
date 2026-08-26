@@ -3,13 +3,15 @@ const DEFAULT_HOST = "xcancel.com";
 const HOST_PATTERN = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/;
 
 async function getState() {
-  const { targetHost, customHosts } = await chrome.storage.sync.get([
+  const { targetHost, customHosts, enabled } = await chrome.storage.sync.get([
     "targetHost",
-    "customHosts"
+    "customHosts",
+    "enabled"
   ]);
   return {
     targetHost: targetHost || DEFAULT_HOST,
-    customHosts: Array.isArray(customHosts) ? customHosts : []
+    customHosts: Array.isArray(customHosts) ? customHosts : [],
+    enabled: enabled !== false
   };
 }
 
@@ -31,7 +33,17 @@ function clearError() {
   document.getElementById("error").classList.add("hidden");
 }
 
-function render({ targetHost, customHosts }) {
+function renderToggle(enabled) {
+  document.getElementById("enabled-toggle").checked = enabled;
+  document.getElementById("enabled-label").textContent = enabled
+    ? "Redirection on"
+    : "Redirection off";
+  document.body.classList.toggle("off", !enabled);
+}
+
+function render({ targetHost, customHosts, enabled }) {
+  renderToggle(enabled);
+
   const list = document.getElementById("host-list");
   list.textContent = "";
 
@@ -108,9 +120,19 @@ function render({ targetHost, customHosts }) {
   };
 }
 
+document.getElementById("enabled-toggle").addEventListener("change", async (event) => {
+  await chrome.storage.sync.set({ enabled: event.target.checked });
+  clearError();
+});
+
 getState().then(render);
 chrome.storage.onChanged.addListener((_, area) => {
   if (area === "sync") {
-    getState().then(render);
+    document.getElementById("enabled-toggle").addEventListener("change", async (event) => {
+  await chrome.storage.sync.set({ enabled: event.target.checked });
+  clearError();
+});
+
+getState().then(render);
   }
 });
